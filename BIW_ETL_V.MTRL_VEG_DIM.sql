@@ -29,12 +29,16 @@ DNA 779: Optimization
 --06/05/2018     Cognizant              REQ0584345 : Added new field PKG_SIZE_DESC
 --12/13/2019   Cognizant 					DEF0587193: Added filter on action type.
 
+Updated By: AMOHA7
+Uppdated On: 8/5/2022
+DDP-4268 Add field PRDHA from MARA into view VEG.ALL_MTRL_VEG, BIW_ETL_V.MTRL_VEG_DIM
+
  */
 
 LOCKING ROW FOR ACCESS
-
 SELECT
     CAST(MTRL.MTRL_NBR AS VARCHAR(18)) AS MTRL_NBR
+	,MTRL.PROD_HRCHY_CD AS PROD_HIERARCHY		--DDP-4268
     ,CAST(MTRL.MTRL_TYP_CD AS VARCHAR(4)) AS MTRL_TYP_CD
     ,CAST(MTRL_GRP.MTRL_GRP_DESC AS VARCHAR(60)) AS FMLY_NM
     ,CAST(MTRL.MTRL_GRP_CD AS VARCHAR(9)) AS MTRL_GRP_CD
@@ -577,7 +581,8 @@ FROM
         -- VPEDD added filter on action_type(DEF0587193)
         (select 
         
-        MTRL_NBR                               
+        MTRL_NBR
+	   ,PROD_HRCHY_CD 	--DDP-4268
        ,MTRL_TYP_CD                         
        ,MTRL_GRP_CD                        
        ,BASIC_MTRL_VAL                    
@@ -694,6 +699,7 @@ AND MTRL.DIV_CD = '27'
 
 GROUP BY
     MTRL.MTRL_NBR
+	,MTRL.PROD_HRCHY_CD	--DDP-4268
     ,MTRL.MTRL_TYP_CD
     ,CROP_NM
     ,SEED_STK_IND
@@ -725,6 +731,6 @@ GROUP BY
     --,SEED_PROD_attr_own_rgn.seed_prod_attr_val
     ,SEED_PRD_VEG.SEED_PROD_NM
     ,SCNDRY_NM.SCNDRY_VRTY_NM
-    ,MTRL.CREATED_BY_NM
-    ,MTRL.CHNG_BY_NM
-    ,MTRL.CREATED_DT;
+	,MTRL.CREATED_BY_NM
+	,MTRL.CHNG_BY_NM
+	,MTRL.CREATED_DT;
